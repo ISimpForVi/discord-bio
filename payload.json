@@ -1,0 +1,53 @@
+{
+  "payload": {
+    "user": {
+      "details": {
+        "slug": "serames",
+        "user_id": "366456097839644672",
+        "flags": 131328,
+        "verified": 0,
+        "upvotes": 1,
+        "created_at": "2020-03-30T03:50:14.000Z",
+        "description": "A JavaScript dev that learns too much and makes too little.",
+        "location": "New Zealand",
+        "gender": 1,
+        "birthday": "2001-09-02T00:00:00.000Z",
+        "email": null,
+        "occupation": "Student",
+        "banner": null,
+        "premium": false,
+        "staff": false
+      },
+      "discordConnections": [{
+          "connection_type": "steam",
+          "name": "Ser Ames",
+          "url": "https://steamcommunity.com/profiles/76561198166167273/",
+          "icon": "fab fa-steam"
+        },
+        {
+          "connection_type": "twitch",
+          "name": "ser_ames",
+          "url": "https://twitch.tv/ser_ames/",
+          "icon": "fab fa-twitch"
+        },
+        {
+          "connection_type": "twitter",
+          "name": "the_ser_ames",
+          "url": "https://twitter.com/the_ser_ames/",
+          "icon": "fab fa-twitter"
+        }
+      ],
+      "userConnections": {
+        "github": "ser-ames\n",
+        "website": "https://serames.me"
+      }
+    },
+    "discord": {
+      "id": "366456097839644672",
+      "username": "Ser Ames",
+      "avatar": "7adb9a6da66b5aef0452ad099bb05e88",
+      "discriminator": "0959",
+      "public_flags": 131328
+    }
+  }
+}
