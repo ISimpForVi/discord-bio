@@ -7,10 +7,13 @@ const { Spinner, Text } = require('powercord/components');
 const AsyncComponent = require('powercord/components/AsyncComponent');
 
 const FormSection = AsyncComponent.from(getModuleByDisplayName('FormSection'));
+const Anchor = AsyncComponent.from(getModuleByDisplayName('Anchor'));
 
 const VerticalScroller = AsyncComponent.from(
   getModuleByDisplayName('VerticalScroller')
 );
+
+const Genders = ['Male', 'Female', 'Nonbinary', 'Undisclosed'];
 
 class Section extends React.PureComponent {
   constructor(props) {
@@ -32,7 +35,7 @@ class Section extends React.PureComponent {
         tag='h5'
         title={title}
       >
-        <Text>{children}</Text>
+        <Text selectable={true}>{children}</Text>
       </FormSection>
     );
   }
@@ -75,6 +78,7 @@ module.exports = class DiscordBio extends React.PureComponent {
   }
 
   render() {
+    const moment = getModule(['momentProperties'], false);
     const { bio, error } = this.state;
 
     if (error) {
@@ -91,7 +95,15 @@ module.exports = class DiscordBio extends React.PureComponent {
         </div>
       );
     } else {
-      const { description } = bio.user.details;
+      const {
+        description,
+        gender,
+        location,
+        email,
+        occupation,
+        birthday,
+        createdAt,
+      } = bio.user.details;
 
       return (
         <VerticalScroller
@@ -100,6 +112,20 @@ module.exports = class DiscordBio extends React.PureComponent {
           fade={true}
         >
           <Section title='Description'>{description}</Section>
+          <Section title='Gender'>{Genders[gender]}</Section>
+          <Section title='Location'>{location}</Section>
+          <Section title='Occupation'>{occupation}</Section>
+          <Section title='Birthday'>
+            {moment(birthday).format('DD.MM.YYYY')}
+          </Section>
+          <Section title='Created At'>
+            {moment(createdAt).format('DD.MM.YYYY')}
+          </Section>
+          {email && (
+            <Section title='E-Mail'>
+              <Anchor href={`mailto:${email}`}>{email}</Anchor>
+            </Section>
+          )}
         </VerticalScroller>
       );
     }

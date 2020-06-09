@@ -49,7 +49,7 @@ module.exports = class Bio extends Plugin {
             verified: !!bio.user.details.verified
           });
         } catch (e) {
-          console.error(e);
+          //Just ignore the error, probably just 404
         }
       },
       getPlatformUserUrl: (account) => {
@@ -96,7 +96,7 @@ module.exports = class Bio extends Plugin {
         key: 'DISCORD_BIO',
         className: tabBarItem,
         id: 'DISCORD_BIO'
-      }, 'discord.bio');
+      }, 'Bio');
 
       //Add the discord.bio tab bar item to the list
       res.props.children.props.children.push(bioTab)
