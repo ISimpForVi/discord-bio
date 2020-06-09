@@ -20,6 +20,7 @@ module.exports = class Bio extends Plugin {
       key => this.classes[key] = `.${this.classes[key].split(' ')[0]}`
     );
 
+    this.loadStylesheet('style.css');
     this._patchUserProfile();
 
     powercord.api.connections.registerConnection({
@@ -45,7 +46,7 @@ module.exports = class Bio extends Plugin {
             type: 'discord-bio',
             id: bio.user.details.slug,
             name: bio.discord.username,
-            verified: bio.user.details.verified || false
+            verified: !!bio.user.details.verified
           });
         } catch (e) {
           console.error(e);

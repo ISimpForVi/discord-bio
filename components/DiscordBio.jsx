@@ -3,12 +3,40 @@ const {
   getModule,
   getModuleByDisplayName,
 } = require('powercord/webpack');
-const { Spinner } = require('powercord/components');
+const { Spinner, Text } = require('powercord/components');
 const AsyncComponent = require('powercord/components/AsyncComponent');
+
+const FormSection = AsyncComponent.from(getModuleByDisplayName('FormSection'));
 
 const VerticalScroller = AsyncComponent.from(
   getModuleByDisplayName('VerticalScroller')
 );
+
+class Section extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.classes = {
+      ...getModule(['marginBottom8'], false),
+    };
+  }
+
+  render() {
+    const { children, title } = this.props;
+
+    if (!children) return null;
+
+    return (
+      <FormSection
+        className={this.classes.marginBottom8}
+        tag='h5'
+        title={title}
+      >
+        <Text>{children}</Text>
+      </FormSection>
+    );
+  }
+}
 
 module.exports = class DiscordBio extends React.PureComponent {
   constructor(props) {
@@ -63,9 +91,15 @@ module.exports = class DiscordBio extends React.PureComponent {
         </div>
       );
     } else {
+      const { description } = bio.user.details;
+
       return (
-        <VerticalScroller className='discord-bio' fade={true}>
-          {/* TODO: Handle rendering the profile */}
+        <VerticalScroller
+          className='discord-bio'
+          style={{ padding: this.classes.marginMedium }}
+          fade={true}
+        >
+          <Section title='Description'>{description}</Section>
         </VerticalScroller>
       );
     }
