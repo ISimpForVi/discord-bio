@@ -1,11 +1,12 @@
 const { Plugin } = require('powercord/entities');
-const { React, getModule, getAllModules, getModuleByDisplayName } = require('powercord/webpack');
+const { React, getModule, getAllModules } = require('powercord/webpack');
 const { forceUpdateElement, getOwnerInstance, waitFor } = require('powercord/util');
 const { inject, uninject } = require('powercord/injector');
-const { get, del } = require('powercord/http');
+const { get } = require('powercord/http');
 const { TabBar } = require('powercord/components');
 
 const DiscordBio = require('./components/DiscordBio');
+const Settings = require('./components/Settings');
 
 module.exports = class Bio extends Plugin {
   async startPlugin() {
@@ -19,6 +20,12 @@ module.exports = class Bio extends Plugin {
     Object.keys(this.classes).forEach(
       key => this.classes[key] = `.${this.classes[key].split(' ')[0]}`
     );
+
+    powercord.api.settings.registerSettings('discord-bio', {
+      category: 'discord-bio',
+      label: 'discord.bio',
+      render: Settings
+    });
 
     this.loadStylesheet('style.css');
     this._patchUserProfile();
@@ -63,8 +70,10 @@ module.exports = class Bio extends Plugin {
   pluginWillUnload() {
     uninject('discord-bio-user-tab-bar');
     uninject('discord-bio-user-body');
+    uninject('discord-bio-user-header');
 
     powercord.api.connections.unregisterConnection('discord-bio');
+    powercord.api.settings.unregisterSettings('discord-bio');
 
     forceUpdateElement(this.classes.header);
   }
@@ -106,17 +115,28 @@ module.exports = class Bio extends Plugin {
 
     inject('discord-bio-user-body', UserProfileBody.prototype, 'render', function (_, res) {
       const { children } = res.props;
-      const { section, user, currentUserId } = this.props;
+      const { section, user } = this.props;
       const fetchBio = (id) => _this.fetchBio(id);
+      const getSetting = (setting, defaultValue) => _this.settings.get(setting, defaultValue);
 
       if (section !== 'DISCORD_BIO') return res;
 
       const body = children.props.children[1];
       body.props.children = [];
 
-      body.props.children.push(React.createElement(DiscordBio, { id: user.id, fetchBio }));
+      body.props.children.push(React.createElement(DiscordBio, { id: user.id, fetchBio, getSetting }));
 
       return res;
     });
+
+    /*
+    TOOD: Will have to see how to implement this properly because fetching the bio is async but we can't inject async
+    inject('discord-bio-user-header', UserProfileBody.prototype, 'renderHeader', function (_, res) {
+      const { user } = this.props;
+      const bio = await _this.fetchBio(user.id);
+
+      return res;
+    });
+    */
   }
 }

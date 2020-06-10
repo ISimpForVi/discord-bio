@@ -63,7 +63,7 @@ module.exports = class DiscordBio extends React.PureComponent {
       switch (e.statusCode) {
         case 404: {
           this.setState({
-            error: "Looks like this person doesn't have a discord.bio profile.",
+            error: "Looks like this person doesn't have a discord.bio profile",
           });
           break;
         }
@@ -80,6 +80,7 @@ module.exports = class DiscordBio extends React.PureComponent {
   render() {
     const moment = getModule(['momentProperties'], false);
     const { bio, error } = this.state;
+    const { getSetting } = this.props;
 
     if (error) {
       return (
@@ -106,20 +107,18 @@ module.exports = class DiscordBio extends React.PureComponent {
       } = bio.user.details;
 
       return (
-        <VerticalScroller
-          className='discord-bio'
-          style={{ padding: this.classes.marginMedium }}
-          fade={true}
-        >
+        <VerticalScroller className='discord-bio' fade={true}>
           <Section title='Description'>{description}</Section>
           <Section title='Gender'>{Genders[gender]}</Section>
           <Section title='Location'>{location}</Section>
           <Section title='Occupation'>{occupation}</Section>
-          <Section title='Birthday'>
-            {moment(birthday).format('DD.MM.YYYY')}
-          </Section>
+          {birthday && (
+            <Section title='Birthday'>
+              {moment(birthday).format(getSetting('date-format', 'DD.MM.YYYY'))}
+            </Section>
+          )}
           <Section title='Created At'>
-            {moment(createdAt).format('DD.MM.YYYY')}
+            {moment(createdAt).format(getSetting('date-format', 'DD.MM.YYYY'))}
           </Section>
           {email && (
             <Section title='E-Mail'>
