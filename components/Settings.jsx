@@ -4,8 +4,7 @@ const { SwitchItem, SelectInput } = require('powercord/components/settings');
 module.exports = class DiscordBioSettings extends React.PureComponent {
   render() {
     const moment = getModule(['momentProperties'], false);
-    const { getSetting, toggleSetting, updateSetting } = this.props;
-    const { dragging, bioSections } = this.state;
+    const { getSetting, updateSetting } = this.props;
 
     const currentDate = moment()
       .startOf('day')
