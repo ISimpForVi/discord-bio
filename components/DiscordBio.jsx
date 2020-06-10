@@ -114,11 +114,19 @@ module.exports = class DiscordBio extends React.PureComponent {
           <Section title='Occupation'>{occupation}</Section>
           {birthday && (
             <Section title='Birthday'>
-              {moment(birthday).format(getSetting('date-format', 'DD.MM.YYYY'))}
+              {moment(birthday)
+                .startOf('day')
+                .format(getSetting('date-format', 'DD.MM.YYYY'))
+                /* I know this is quick and dirty but you can't stop me MUAHAHAHA */
+                .replace(' 12:00 AM', '')}
             </Section>
           )}
           <Section title='Created At'>
-            {moment(createdAt).format(getSetting('date-format', 'DD.MM.YYYY'))}
+            {moment(createdAt)
+              .startOf('day')
+              .format(getSetting('date-format', 'DD.MM.YYYY'))
+              /* I know this is quick and dirty but you can't stop me MUAHAHAHA */
+              .replace(' 12:00 AM', '')}
           </Section>
           {email && (
             <Section title='E-Mail'>

@@ -1,9 +1,17 @@
-const { React } = require('powercord/webpack');
+const { React, getModule } = require('powercord/webpack');
 const { SwitchItem, SelectInput } = require('powercord/components/settings');
 
 module.exports = class DiscordBioSettings extends React.PureComponent {
   render() {
+    const moment = getModule(['momentProperties'], false);
     const { getSetting, toggleSetting, updateSetting } = this.props;
+    const { dragging, bioSections } = this.state;
+
+    const currentDate = moment()
+      .startOf('day')
+      .format('llll')
+      /* I know this is quick and dirty but you can't stop me MUAHAHAHA */
+      .replace(' 12:00 AM', '');
 
     return (
       <div className='discord-bio-settings'>
@@ -25,6 +33,8 @@ module.exports = class DiscordBioSettings extends React.PureComponent {
             { label: 'MM.DD.YYYY', value: 'MM.DD.YYYY' },
             { label: 'DD/MM/YYYY', value: 'DD/MM/YYYY' },
             { label: 'MM/DD/YYYY', value: 'MM/DD/YYYY' },
+            { label: 'YYYY-MM-DD', value: 'YYYY-MM-DD' },
+            { label: `Locale Date (${currentDate})`, value: 'llll' },
           ]}
           onChange={(t) => updateSetting('date-format', t.value)}
         >
