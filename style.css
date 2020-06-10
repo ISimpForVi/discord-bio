@@ -1,3 +1,7 @@
 .discord-bio {
-  padding: 20px;
+  padding: 20px 10px;
+}
+
+.bio-section {
+  padding: 5px 10px;
 }

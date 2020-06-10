@@ -3,7 +3,7 @@ const {
   getModule,
   getModuleByDisplayName,
 } = require('powercord/webpack');
-const { Spinner, Text } = require('powercord/components');
+const { Spinner, Text, Flex } = require('powercord/components');
 const AsyncComponent = require('powercord/components/AsyncComponent');
 
 const FormSection = AsyncComponent.from(getModuleByDisplayName('FormSection'));
@@ -31,7 +31,7 @@ class Section extends React.PureComponent {
 
     return (
       <FormSection
-        className={this.classes.marginBottom8}
+        className={this.classes.marginBottom8 + ' bio-section'}
         tag='h5'
         title={title}
       >
@@ -108,31 +108,33 @@ module.exports = class DiscordBio extends React.PureComponent {
 
       return (
         <VerticalScroller className='discord-bio' fade={true}>
-          <Section title='Description'>{description}</Section>
-          <Section title='Gender'>{Genders[gender]}</Section>
-          <Section title='Location'>{location}</Section>
-          <Section title='Occupation'>{occupation}</Section>
-          {birthday && (
-            <Section title='Birthday'>
-              {moment(birthday)
+          <Flex justify={Flex.Justify.START} wrap={Flex.Wrap.WRAP}>
+            <Section title='Description'>{description}</Section>
+            <Section title='Gender'>{Genders[gender]}</Section>
+            <Section title='Location'>{location}</Section>
+            <Section title='Occupation'>{occupation}</Section>
+            {birthday && (
+              <Section title='Birthday'>
+                {moment(birthday)
+                  .startOf('day')
+                  .format(getSetting('date-format', 'DD.MM.YYYY'))
+                  /* I know this is quick and dirty but you can't stop me MUAHAHAHA */
+                  .replace(' 12:00 AM', '')}
+              </Section>
+            )}
+            <Section title='Created At'>
+              {moment(createdAt)
                 .startOf('day')
                 .format(getSetting('date-format', 'DD.MM.YYYY'))
                 /* I know this is quick and dirty but you can't stop me MUAHAHAHA */
                 .replace(' 12:00 AM', '')}
             </Section>
-          )}
-          <Section title='Created At'>
-            {moment(createdAt)
-              .startOf('day')
-              .format(getSetting('date-format', 'DD.MM.YYYY'))
-              /* I know this is quick and dirty but you can't stop me MUAHAHAHA */
-              .replace(' 12:00 AM', '')}
-          </Section>
-          {email && (
-            <Section title='E-Mail'>
-              <Anchor href={`mailto:${email}`}>{email}</Anchor>
-            </Section>
-          )}
+            {email && (
+              <Section title='E-Mail'>
+                <Anchor href={`mailto:${email}`}>{email}</Anchor>
+              </Section>
+            )}
+          </Flex>
         </VerticalScroller>
       );
     }
