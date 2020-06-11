@@ -47,6 +47,7 @@ module.exports = class DiscordBio extends React.PureComponent {
 
     this.classes = {
       empty: getModule(['body', 'empty'], false).empty,
+      nelly: getModule(['flexWrapper', 'image'], false).image,
       ...getModule(['emptyIcon'], false),
     };
 
@@ -63,13 +64,28 @@ module.exports = class DiscordBio extends React.PureComponent {
       switch (e.statusCode) {
         case 404: {
           this.setState({
-            error: "Looks like this person doesn't have a discord.bio profile",
+            error: {
+              message:
+                "Looks like this person doesn't have a discord.bio profile",
+              icon: this.classes.emptyIconFriends,
+            },
+          });
+          break;
+        }
+        case 429: {
+          this.setState({
+            error: {
+              message:
+                'Woah there buddy! You hit the rate limit. Maybe… try slowing down?',
+            },
           });
           break;
         }
         default: {
           this.setState({
-            error: 'An unknown error occured. Maybe try again later?',
+            error: {
+              message: 'An unknown error occurred. Maybe try again later?',
+            },
           });
           break;
         }
@@ -83,10 +99,12 @@ module.exports = class DiscordBio extends React.PureComponent {
     const { getSetting } = this.props;
 
     if (error) {
+      const { message, icon } = error;
+
       return (
         <div className={this.classes.empty}>
-          <div className={this.classes.emptyIconFriends} />
-          <div className={this.classes.emptyText}>{error}</div>
+          <div className={(icon || this.classes.nelly) + ' error-icon'} />
+          <div className={this.classes.emptyText}>{message}</div>
         </div>
       );
     } else if (!bio) {
