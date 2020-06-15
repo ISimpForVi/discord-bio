@@ -11,3 +11,8 @@ This plugin adds a connection to the discord.bio profile page on the connections
 Feel free to open an issue on this repo if you want to highlight an issue or give a suggestion.
 
 Alternatively you can get in touch with either [Amie](https://dsc.bio/amie) or [Marvin](https://dsc.bio/marvin) if you want to.
+
+### Features to be Added
+
+ - Connections on discord.bio showing in the connections on the users profile.
+ - Badges from discord.bio showing in the badges area on the users profile.
