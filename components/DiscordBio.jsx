@@ -1,6 +1,7 @@
 const {
   React,
   getModule,
+  i18n: { Messages },
   getModuleByDisplayName,
 } = require('powercord/webpack');
 const { Spinner, Text, Flex } = require('powercord/components');
@@ -51,7 +52,10 @@ module.exports = class DiscordBio extends React.PureComponent {
       ...getModule(['emptyIcon'], false),
     };
 
-    this.state = {};
+    this.state = {
+      streamerMode: getModule(['hidePersonalInformation'], false)
+        .hidePersonalInformation,
+    };
   }
 
   async componentDidMount() {
@@ -95,10 +99,19 @@ module.exports = class DiscordBio extends React.PureComponent {
 
   render() {
     const moment = getModule(['momentProperties'], false);
-    const { bio, error } = this.state;
+    const { bio, error, streamerMode } = this.state;
     const { getSetting } = this.props;
 
-    if (error) {
+    if (streamerMode) {
+      return (
+        <div className={this.classes.empty}>
+          <div className={this.classes.emptyIconStreamerMode} />
+          <div className={this.classes.emptyText}>
+            {Messages.STREAMER_MODE_ENABLED}
+          </div>
+        </div>
+      );
+    } else if (error) {
       const { message, icon } = error;
 
       return (
