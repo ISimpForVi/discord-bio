@@ -79,7 +79,7 @@ module.exports = class Bio extends Plugin {
   }
 
   async fetchBio(id) {
-    return await get(`https://api.discord.bio/v1/user/details/${id}`)
+    return await get(`https://api.discord.bio/user/details/${id}`)
       .then(r => r.body && r.body.payload);
   }
 
