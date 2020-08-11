@@ -134,7 +134,7 @@ module.exports = class DiscordBio extends React.PureComponent {
         email,
         occupation,
         birthday,
-        createdAt,
+        created_at,
       } = bio.user.details;
 
       return (
@@ -154,7 +154,7 @@ module.exports = class DiscordBio extends React.PureComponent {
               </Section>
             )}
             <Section title='Created At'>
-              {moment(createdAt)
+              {moment(created_at)
                 .startOf('day')
                 .format(getSetting('date-format', 'DD.MM.YYYY'))
                 /* I know this is quick and dirty but you can't stop me MUAHAHAHA */
