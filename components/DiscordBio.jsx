@@ -10,9 +10,7 @@ const AsyncComponent = require('powercord/components/AsyncComponent');
 const FormSection = AsyncComponent.from(getModuleByDisplayName('FormSection'));
 const Anchor = AsyncComponent.from(getModuleByDisplayName('Anchor'));
 
-const VerticalScroller = AsyncComponent.from(
-  getModuleByDisplayName('VerticalScroller')
-);
+const { AdvancedScrollerThin } = getModule(['AdvancedScrollerThin'], false);
 
 const Genders = ['Male', 'Female', 'Nonbinary', 'Undisclosed'];
 
@@ -138,7 +136,7 @@ module.exports = class DiscordBio extends React.PureComponent {
       } = bio.user.details;
 
       return (
-        <VerticalScroller className='discord-bio' fade={true}>
+        <AdvancedScrollerThin className='discord-bio' fade={true}>
           <Flex justify={Flex.Justify.START} wrap={Flex.Wrap.WRAP}>
             <Section title='Description'>{description}</Section>
             <Section title='Gender'>{Genders[gender]}</Section>
@@ -166,7 +164,7 @@ module.exports = class DiscordBio extends React.PureComponent {
               </Section>
             )}
           </Flex>
-        </VerticalScroller>
+        </AdvancedScrollerThin>
       );
     }
   }
