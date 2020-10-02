@@ -18,6 +18,8 @@ const FormDivider = AsyncComponent.from(getModuleByDisplayName('FormDivider'));
 
 module.exports = class DiscordBioSettings extends React.PureComponent {
   constructor(props) {
+    super(props);
+
     this.classes = {
       ...getModule(['marginBottom8'], false),
       ...getModule(['dividerDefault'], false),
