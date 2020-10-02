@@ -1,0 +1,22 @@
+{
+  "DATE_FORMAT": "Date Format",
+  "DATE_FORMAT_DESC": "Change the date format to anything you want. Not sure what this gibberish means? [Click here to find out more]({momentJsDocsUrl})!",
+  "PREVIEW": "Preview",
+  "PRESETS": "Presets",
+  "PRESETS_DESC": "Not sure what to put in that box up there or just need some inspiration? No worries, we got you covered! Just select any of our handy dandy presets and then tune it till you like it.",
+  "SHOW_BIO_TAB": "Show Bio Tab (Coming Soon™️)",
+  "SHOW_BIO_TAB_DESC": "Not feeling like seeing the bio tab if someone doesn't even have a bio to begin with or simply don't want it at all? No problem, just select the behaviour you prefer!",
+  "SHOW_BIO_TAB_ALWAYS": "Always",
+  "SHOW_BIO_TAB_HAS_BIO": "Only if the user has a bio",
+  "SHOW_BIO_TAB_NEVER": "Never",
+  "NO_DISCORD_BIO_PROFILE": "Looks like this person doesn't have a discord.bio profile",
+  "DISCORD_BIO_RATELIMITED": "Woah there buddy! You hit the rate limit. Maybe… try slowing down?",
+  "DISCORD_BIO_UNKNOWN_ERROR": "An unknown error occurred. Maybe try again later?",
+  "DESCRIPTION": "Description",
+  "GENDER": "Gender",
+  "LOCATION": "Location",
+  "OCCUPATION": "Occupation",
+  "BIRTHDAY": "Birthday",
+  "CREATED_AT": "Created at",
+  "EMAIL": "E-Mail"
+}

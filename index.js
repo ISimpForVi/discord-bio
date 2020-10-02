@@ -8,8 +8,11 @@ const { TabBar } = require('powercord/components');
 const DiscordBio = require('./components/DiscordBio');
 const Settings = require('./components/Settings');
 
+const i18n = require('./i18n');
+
 module.exports = class Bio extends Plugin {
   async startPlugin() {
+    await powercord.api.i18n.loadAllStrings(i18n);
 
     this.classes = {
       ...await getModule(['headerInfo', 'nameTag']),
@@ -97,17 +100,17 @@ module.exports = class Bio extends Plugin {
     inject('discord-bio-user-tab-bar', UserProfileBody.prototype, 'renderTabBar', function (_, res) {
       const { user } = this.props;
 
-      //Don't bother rendering if there's no tab bar, user or if the user is a bot
+      // Don't bother rendering if there's no tab bar, user or if the user is a bot
       if (!res || !user || user.bot) return res;
 
-      //Create discord.bio tab bar item
+      // Create discord.bio tab bar item
       const bioTab = React.createElement(TabBar.Item, {
         key: 'DISCORD_BIO',
         className: tabBarItem,
         id: 'DISCORD_BIO'
       }, 'Bio');
 
-      //Add the discord.bio tab bar item to the list
+      // Add the discord.bio tab bar item to the list
       res.props.children.props.children.push(bioTab)
 
       return res;
@@ -128,15 +131,5 @@ module.exports = class Bio extends Plugin {
 
       return res;
     });
-
-    /*
-    TOOD: Will have to see how to implement this properly because fetching the bio is async but we can't inject async
-    inject('discord-bio-user-header', UserProfileBody.prototype, 'renderHeader', function (_, res) {
-      const { user } = this.props;
-      const bio = await _this.fetchBio(user.id);
-
-      return res;
-    });
-    */
   }
 }

@@ -67,8 +67,7 @@ module.exports = class DiscordBio extends React.PureComponent {
         case 404: {
           this.setState({
             error: {
-              message:
-                "Looks like this person doesn't have a discord.bio profile",
+              message: Messages.NO_DISCORD_BIO_PROFILE,
               icon: this.classes.emptyIconFriends,
             },
           });
@@ -77,8 +76,7 @@ module.exports = class DiscordBio extends React.PureComponent {
         case 429: {
           this.setState({
             error: {
-              message:
-                'Woah there buddy! You hit the rate limit. Maybe… try slowing down?',
+              message: Messages.DISCORD_BIO_RATELIMITED,
             },
           });
           break;
@@ -86,7 +84,7 @@ module.exports = class DiscordBio extends React.PureComponent {
         default: {
           this.setState({
             error: {
-              message: 'An unknown error occurred. Maybe try again later?',
+              message: Messages.DISCORD_BIO_UNKNOWN_ERROR,
             },
           });
           break;
@@ -134,32 +132,25 @@ module.exports = class DiscordBio extends React.PureComponent {
         birthday,
         created_at,
       } = bio.user.details;
+      const dateFormat = getSetting('date-format', 'DD.MM.YYYY');
 
       return (
         <AdvancedScrollerThin className='discord-bio' fade={true}>
           <Flex justify={Flex.Justify.START} wrap={Flex.Wrap.WRAP}>
-            <Section title='Description'>{description}</Section>
-            <Section title='Gender'>{Genders[gender]}</Section>
-            <Section title='Location'>{location}</Section>
-            <Section title='Occupation'>{occupation}</Section>
+            <Section title={Messages.DESCRIPTION}>{description}</Section>
+            <Section title={Messages.GENDER}>{Genders[gender]}</Section>
+            <Section title={Messages.LOCATION}>{location}</Section>
+            <Section title={Messages.OCCUPATION}>{occupation}</Section>
             {birthday && (
-              <Section title='Birthday'>
-                {moment(birthday)
-                  .startOf('day')
-                  .format(getSetting('date-format', 'DD.MM.YYYY'))
-                  /* I know this is quick and dirty but you can't stop me MUAHAHAHA */
-                  .replace(' 12:00 AM', '')}
+              <Section title={Messages.BIRTHDAY}>
+                {moment(birthday).utc().startOf('day').format(dateFormat)}
               </Section>
             )}
-            <Section title='Created At'>
-              {moment(created_at)
-                .startOf('day')
-                .format(getSetting('date-format', 'DD.MM.YYYY'))
-                /* I know this is quick and dirty but you can't stop me MUAHAHAHA */
-                .replace(' 12:00 AM', '')}
+            <Section title={Messages.CREATED_AT}>
+              {moment(created_at).utc().startOf('day').format(dateFormat)}
             </Section>
             {email && (
-              <Section title='E-Mail'>
+              <Section title={Messages.EMAIL}>
                 <Anchor href={`mailto:${email}`}>{email}</Anchor>
               </Section>
             )}
