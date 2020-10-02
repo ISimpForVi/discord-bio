@@ -56,7 +56,7 @@ module.exports = class DiscordBioSettings extends React.PureComponent {
 
         <FormItem
           title={Messages.PREVIEW}
-          className={this.classes.margin20Bottom}
+          className={this.classes.marginBottom20}
         >
           <Text>{moment().utc().startOf('day').format(currentFormat)}</Text>
           <FormDivider className={this.classes.dividerDefault} />
@@ -64,9 +64,9 @@ module.exports = class DiscordBioSettings extends React.PureComponent {
 
         <FormItem
           title={Messages.PRESETS}
-          className={this.classes.margin20Bottom}
+          className={this.classes.marginBottom20}
         >
-          <FormText type='description' className={this.classes.margin8Bottom}>
+          <FormText type='description' className={this.classes.marginBottom8}>
             {Messages.PRESETS_DESC}
           </FormText>
           <RadioGroup
@@ -87,7 +87,7 @@ module.exports = class DiscordBioSettings extends React.PureComponent {
           <FormText
             disabled
             type='description'
-            className={this.classes.margin8Bottom}
+            className={this.classes.marginBottom8}
           >
             {Messages.SHOW_BIO_TAB_DESC}
           </FormText>
