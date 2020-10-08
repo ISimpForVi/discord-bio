@@ -1,5 +1,5 @@
 const { Plugin } = require('powercord/entities');
-const { React, getModule, getAllModules } = require('powercord/webpack');
+const { React, getModule, getAllModules, i18n: { Messages } } = require('powercord/webpack');
 const { forceUpdateElement, getOwnerInstance, waitFor } = require('powercord/util');
 const { inject, uninject } = require('powercord/injector');
 const { get } = require('powercord/http');
@@ -11,12 +11,18 @@ const Settings = require('./components/Settings');
 const i18n = require('./i18n');
 
 module.exports = class Bio extends Plugin {
+  constructor () {
+    super();
+    this.ConnectedDiscordBio = this.settings.connectStore(DiscordBio)
+  }
+
   async startPlugin() {
     await powercord.api.i18n.loadAllStrings(i18n);
 
     this.classes = {
       ...await getModule(['headerInfo', 'nameTag']),
       ...await getAllModules(['modal', 'inner'])[1],
+      ...await getModule(['emptyIcon']),
       header: (await getModule(['iconBackgroundTierNone', 'container'])).header
     };
 
@@ -71,6 +77,7 @@ module.exports = class Bio extends Plugin {
   }
 
   pluginWillUnload() {
+    uninject('discord-bio-user-load');
     uninject('discord-bio-user-tab-bar');
     uninject('discord-bio-user-body');
     uninject('discord-bio-user-header');
@@ -97,6 +104,51 @@ module.exports = class Bio extends Plugin {
     const UserProfileBody = instance._reactInternalFiber.return.type;
     const _this = this;
 
+    inject('discord-bio-user-load', UserProfileBody.prototype, 'componentDidMount', async function (_, res) {
+      const { user } = this.props;
+      if (!user || user.bot) return;
+
+      try {
+        const bio = await _this.fetchBio(user.id);
+        this.setState({ _dscBio: bio });
+      } catch (e) {
+        switch (e.statusCode) {
+          case 404: {
+            this.setState({
+              _dscBio: {
+                error: {
+                  message: Messages.DSCBIO_NO_DISCORD_BIO_PROFILE,
+                  icon: this.classes.emptyIconFriends,
+                }
+              }
+            });
+            break;
+          }
+          case 429: {
+            this.setState({
+              _dscBio: {
+                error: {
+                  message: Messages.DSCBIO_DISCORD_BIO_RATELIMITED,
+                }
+              }
+            });
+            break;
+          }
+          default: {
+            _this.error('dsc.bio error:', e)
+            this.setState({
+              _dscBio: {
+                error: {
+                  message: Messages.DSCBIO_DISCORD_BIO_UNKNOWN_ERROR,
+                }
+              }
+            });
+            break;
+          }
+        }
+      }
+    });
+
     inject('discord-bio-user-tab-bar', UserProfileBody.prototype, 'renderTabBar', function (_, res) {
       const { user } = this.props;
 
@@ -104,6 +156,11 @@ module.exports = class Bio extends Plugin {
       if (!res || !user || user.bot) return res;
 
       // Create discord.bio tab bar item
+      const showSetting = _this.settings.get('show-bio-tab', 'always')
+      if (showSetting === 'never' || (showSetting === 'has-bio' && (!this.state._dscBio || this.state._dscBio.error))) {
+        return res;
+      }
+
       const bioTab = React.createElement(TabBar.Item, {
         key: 'DISCORD_BIO',
         className: tabBarItem,
@@ -118,16 +175,14 @@ module.exports = class Bio extends Plugin {
 
     inject('discord-bio-user-body', UserProfileBody.prototype, 'render', function (_, res) {
       const { children } = res.props;
-      const { section, user } = this.props;
-      const fetchBio = (id) => _this.fetchBio(id);
-      const getSetting = (setting, defaultValue) => _this.settings.get(setting, defaultValue);
+      const { section } = this.props;
 
       if (section !== 'DISCORD_BIO') return res;
 
       const body = children.props.children[1];
       body.props.children = [];
 
-      body.props.children.push(React.createElement(DiscordBio, { id: user.id, fetchBio, getSetting }));
+      body.props.children.push(React.createElement(_this.ConnectedDiscordBio, { bio: this.state._dscBio }));
 
       return res;
     });

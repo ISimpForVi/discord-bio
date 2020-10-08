@@ -5,8 +5,6 @@ const {
   i18n: { Messages },
 } = require('powercord/webpack');
 const {
-  SwitchItem,
-  SelectInput,
   TextInput,
 } = require('powercord/components/settings');
 const { AsyncComponent, Text } = require('powercord/components');
@@ -43,7 +41,7 @@ module.exports = class DiscordBioSettings extends React.PureComponent {
     return (
       <div className='discord-bio-settings'>
         <TextInput
-          note={Messages.DATE_FORMAT_DESC.format({
+          note={Messages.DSCBIO_DATE_FORMAT_DESC.format({
             momentJsDocsUrl: 'https://momentjs.com/docs/#/displaying/format/',
           })}
           value={currentFormat}
@@ -51,11 +49,11 @@ module.exports = class DiscordBioSettings extends React.PureComponent {
             updateSetting('date-format', value);
           }}
         >
-          {Messages.DATE_FORMAT}
+          {Messages.DSCBIO_DATE_FORMAT}
         </TextInput>
 
         <FormItem
-          title={Messages.PREVIEW}
+          title={Messages.DSCBIO_PREVIEW}
           className={this.classes.marginBottom20}
         >
           <Text>{moment().utc().startOf('day').format(currentFormat)}</Text>
@@ -63,11 +61,11 @@ module.exports = class DiscordBioSettings extends React.PureComponent {
         </FormItem>
 
         <FormItem
-          title={Messages.PRESETS}
+          title={Messages.DSCBIO_PRESETS}
           className={this.classes.marginBottom20}
         >
           <FormText type='description' className={this.classes.marginBottom8}>
-            {Messages.PRESETS_DESC}
+            {Messages.DSCBIO_PRESETS_DESC}
           </FormText>
           <RadioGroup
             value={currentFormat}
@@ -83,24 +81,22 @@ module.exports = class DiscordBioSettings extends React.PureComponent {
           />
           <FormDivider className={this.classes.dividerDefault} />
         </FormItem>
-        <FormItem disabled title={Messages.SHOW_BIO_TAB}>
+        <FormItem title={Messages.DSCBIO_SHOW_BIO_TAB}>
           <FormText
-            disabled
             type='description'
             className={this.classes.marginBottom8}
           >
-            {Messages.SHOW_BIO_TAB_DESC}
+            {Messages.DSCBIO_SHOW_BIO_TAB_DESC}
           </FormText>
           <RadioGroup
-            disabled
             value={getSetting('show-bio-tab', 'always')}
             onChange={(option) => {
               updateSetting('show-bio-tab', option.value);
             }}
             options={[
-              { name: Messages.SHOW_BIO_TAB_ALWAYS, value: 'always' },
-              { name: Messages.SHOW_BIO_TAB_HAS_BIO, value: 'has-bio' },
-              { name: Messages.SHOW_BIO_TAB_NEVER, value: 'never' },
+              { name: Messages.DSCBIO_SHOW_BIO_TAB_ALWAYS, value: 'always' },
+              { name: Messages.DSCBIO_SHOW_BIO_TAB_HAS_BIO, value: 'has-bio' },
+              { name: Messages.DSCBIO_SHOW_BIO_TAB_NEVER, value: 'never' },
             ]}
           />
         </FormItem>
