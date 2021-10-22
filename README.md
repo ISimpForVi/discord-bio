@@ -1,3 +1,6 @@
+# **DEPRECATED REPOSITORY**
+
+
 # Discord.bio
 
 A powercord plugin that shows a users' details from [discord.bio](https://discord.bio) on the profile modal.
